@@ -1,0 +1,73 @@
+
+
+<!DOCTYPE html>
+<html lang="en" ng-csp ng-app="Wikipedia" ng-controller="WikipediaAppController">
+<head>
+    <meta charset="utf-8">
+    <title>Wikipedia Chrome Extension</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Wikipedia Chrome Extension for serious Wikipedia fans!">
+    <meta name="author" content="https://github.com/siddii">
+
+    <!-- Le styles -->
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet"/>
+    <link href="css/extension.css" rel="stylesheet"/>
+
+    <script src="jquery/jquery-1.9.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="angular/angular.js"></script>
+    <script src="js/extension.js"></script>
+    <base href="{{baseUrl}}" target="_new">
+</head>
+
+<body>
+<div class="container">
+    <div class="row-fluid">
+        <div class="span12">
+            
+<form class="form-search" target="_new" action="http://www.quora.com/search">
+                <label class="label-search" for="search">Quora</label>  <input type="text" name="q" size="25" maxlength="255" value=""  autocomplete="off" autofocus name="search" id="search" class="input-medium search-query" placeholder="Search Quora"/>
+
+            </form>
+<form class="form-search" target="_new" action="http://www.youtube.com/results?search">
+                <label class="label-search" for="search">Youtube</label>  <input type="text" name="q" size="25" maxlength="255" value=""  autocomplete="off" autofocus name="search" id="search" class="input-medium search-query" placeholder="Search Youtube"/>
+
+            </form>
+
+
+<form class="form-search" target="_new" action="http://www.google.co.in/search">
+                <label class="label-search" for="search">Google</label>  <input type="text" name="q" size="25" maxlength="255" value=""  autocomplete="off" autofocus name="search" id="search" class="input-medium search-query" placeholder="Search Google"/>
+            
+</form>
+<form class="form-search" target="_new" action="http://en.wikipedia.org//w/index.php">
+                <label class="label-search" for="search">Wikipedia</label><input type="text" autocomplete="off" autofocus name="search" id="search" class="input-medium search-query" placeholder="Search Wikipedia"/>
+
+</form>
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs">
+        <li ng-repeat="dropdown in dropdowns" class="dropdown" ng-class="{active : selectedTab.dropdown == dropdown}">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{dropdown}} <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li ng-repeat="tab in getTabsForDropdown(dropdown)" ng-click="loadTab(tab);" ng-class="{active : tab.id==selectedTab.id}"><a href="#{{tab.id}}" data-toggle="tab">{{tab.title}}</a></li>
+            </ul>
+        </li>
+
+      
+  
+<li ng-repeat="tab in tabs | filter:isNotDropDownTab" ng-click="loadTab(tab);" ng-class="{active : tab.id==selectedTab.id}"><a href="#{{tab.id}}" data-toggle="tab">{{tab.title}}</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="{{tab.id}}" ng-repeat="tab in tabs" class="tab-pane fade in" ng-class="{active : tab.id==selectedTab.id}">
+            <ng-switch on="feedType(tab)">
+                <ng-include ng-switch-when="page" src="'templates/page.html'"></ng-include>
+                <ng-include ng-switch-default src="'templates/feed.html'"></ng-include>
+            </ng-switch>
+        </div>
+    </div>
+</div>
+</body>
+</html>
